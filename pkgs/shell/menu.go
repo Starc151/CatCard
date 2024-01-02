@@ -25,7 +25,7 @@ func (sh *Shell)getMenuItems(nameMenu, fileMenu string) *fyne.Menu {
 	for scanner.Scan() {
 		switch scanner.Text() {
 		case "Контакты":
-			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {contacts(sh.window)}))
+			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {sh.contacts()}))
 		default:
 			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), nil))
 		}
@@ -33,7 +33,7 @@ func (sh *Shell)getMenuItems(nameMenu, fileMenu string) *fyne.Menu {
 	return fyne.NewMenu(nameMenu, menuItems...)
 }
 
-func contacts(w fyne.Window) {
-	dialog.ShowInformation("Контакты", "А вы с какой целью, собственно, интересуетесь?", w)
+func (sh *Shell) contacts() {
+	dialog.ShowInformation("Контакты", "А вы с какой целью, собственно, интересуетесь?", sh.window)
 }
 
