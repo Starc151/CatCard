@@ -21,14 +21,10 @@ type Shell struct{
 	}
 }
 
-func (sh *Shell) sizeShell() {
-	sh.window.Resize(fyne.NewSize(925, 650))
-	// sh.window.SetFixedSize(true)
-}
-
 func NewShell(app fyne.App) {
 	sh := Shell{}
 	sh.window = app.NewWindow("Каталога почтовых карточек с техникой")
+	
 	sh.getMenu()
 	sh.searchBox()
 	sh.getPic()
@@ -46,7 +42,7 @@ func NewShell(app fyne.App) {
 		sh.card.note,
 	)
 	
+	sh.window.Resize(fyne.NewSize(925, 650))
 	sh.window.SetContent(cont)
-	sh.sizeShell()
 	sh.window.Show()
 }
