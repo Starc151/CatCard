@@ -10,13 +10,13 @@ import (
 
 func (sh *Shell) getMenu() {
 	mainMenu := fyne.NewMainMenu(
-		getMenuItems("Каталоги", "catalogs", sh.window),
-		getMenuItems("Действия", "actions", sh.window),
+		sh.getMenuItems("Каталоги", "catalogs"),
+		sh.getMenuItems("Действия", "actions"),
 	)
 	sh.window.SetMainMenu(mainMenu)
 }
 
-func getMenuItems(nameMenu, fileMenu string, w fyne.Window) *fyne.Menu {
+func (sh *Shell)getMenuItems(nameMenu, fileMenu string) *fyne.Menu {
 	file, _ := os.Open("./pkgs/shell/" + fileMenu + ".txt")
 	defer file.Close()
 	menuItems := []*fyne.MenuItem{}
@@ -25,7 +25,7 @@ func getMenuItems(nameMenu, fileMenu string, w fyne.Window) *fyne.Menu {
 	for scanner.Scan() {
 		switch scanner.Text() {
 		case "Контакты":
-			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {contacts(w)}))
+			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {contacts(sh.window)}))
 		default:
 			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), nil))
 		}
