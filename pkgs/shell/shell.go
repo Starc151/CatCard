@@ -12,7 +12,6 @@ type Shell struct{
 	card struct {
 		pic *canvas.Image
 		descript *canvas.Text
-		note *canvas.Text
 	}
 	btn *widget.Button
 	search	struct {
@@ -20,29 +19,30 @@ type Shell struct{
 		btn *widget.Button
 	}
 }
-
-func NewShell(app fyne.App) {
-	sh := Shell{}
-	sh.window = app.NewWindow("Каталога почтовых карточек с техникой")
-	
+func (sh *Shell) buildShel() {
 	sh.getMenu()
 	sh.searchBox()
 	sh.getPic()
 	sh.getDescript()
-	sh.getNote()
+}
+func NewShell(app fyne.App) {
+	sh := Shell{}
+	sh.window = app.NewWindow("Каталога почтовых карточек с техникой")
+	sh.buildShel()
 	
 	cont := container.NewWithoutLayout(
 		sh.search.field,
 		sh.search.btn,
 		sh.card.pic,
 		sh.card.descript,
-		sh.button("Prev", 210, 10),
-		sh.button("Next", 210, 237),
-		sh.button("Oborot", 437, 470),
-		sh.card.note,
+		sh.button("Обратная сторона", 437, 10, 450),
+		sh.button("Вперед", 210, 10, 510),
+		sh.button("Назад", 210, 237, 510),
 	)
 	
-	sh.window.Resize(fyne.NewSize(925, 650))
+	sh.window.Resize(fyne.NewSize(905, 650))
+	sh.window.SetFixedSize(true)
+	sh.window.CenterOnScreen()
 	sh.window.SetContent(cont)
 	sh.window.Show()
 }
