@@ -11,7 +11,7 @@ type Shell struct{
 	window	fyne.Window
 	card struct {
 		pic *canvas.Image
-		descript *canvas.Text
+		// descript *[]canvas.Text
 	}
 	btn *widget.Button
 	search	struct {
@@ -23,7 +23,7 @@ func (sh *Shell) buildShel() {
 	sh.getMenu()
 	sh.searchBox()
 	sh.getPic()
-	sh.getDescript()
+	// sh.getDescript()
 }
 func NewShell(app fyne.App) {
 	sh := Shell{}
@@ -34,7 +34,7 @@ func NewShell(app fyne.App) {
 		sh.search.field,
 		sh.search.btn,
 		sh.card.pic,
-		sh.card.descript,
+		sh.getDescript(2),
 		sh.button("Обратная сторона", 437, 10, 450),
 		sh.button("Вперед", 210, 10, 510),
 		sh.button("Назад", 210, 237, 510),
