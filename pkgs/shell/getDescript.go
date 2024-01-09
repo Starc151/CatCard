@@ -15,9 +15,9 @@ func (sh *Shell) getDescript(numRow int) *fyne.Container {
     xlFile, _ := xlsx.OpenFile(excelFileName)
 	firstRow := xlFile.Sheets[0].Rows[0].Cells
 	for numCell := 0; numCell <= len(firstRow)-1; numCell++ {
-		if (firstRow[numCell].String() != "") && (xlFile.Sheets[0].Rows[numRow].Cells[numCell].String() != "") {
+		if /*(firstRow[numCell].String() != "") && */ (xlFile.Sheets[0].Rows[numRow-1].Cells[numCell].String() != "") {
 			sh.card.descript[numCell] = &canvas.Text{}
-			sh.card.descript[numCell].Text = firstRow[numCell].String()+" "+xlFile.Sheets[0].Rows[numRow].Cells[numCell].String()
+			sh.card.descript[numCell].Text = firstRow[numCell].String()+" "+xlFile.Sheets[0].Rows[numRow-1].Cells[numCell].String()
 			sh.card.descript[numCell].TextSize = 20
 			sh.card.descript = append(sh.card.descript, sh.card.descript[numCell])
 			vBox.Add(sh.card.descript[numCell])
