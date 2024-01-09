@@ -12,7 +12,7 @@ func (sh *Shell) getPic() {
 	sh.card.pic = &canvas.Image{}
 	if _, err := os.Stat(fmt.Sprintf("pics/%d.jpg", sh.card.id)); err != nil{
 		if os.IsNotExist(err) {
-			sh.card.pic.File = fmt.Sprintf("img/noPhoto.jpg")
+			sh.card.pic.File = "img/noPhoto.jpg"
 		}
 	} else {
 		sh.card.pic.File = fmt.Sprintf("pics/%d.jpg", sh.card.id)

@@ -11,6 +11,9 @@ func (sh *Shell) button(text string, width, x, y float32, f func()) *widget.Butt
 	sh.btn.OnTapped = f
 	sh.btn.Resize(fyne.NewSize(width, 40))
 	sh.btn.Move(fyne.NewPos(x, y))
+	if sh.card.id == 2 && text == "Назад"{
+		sh.btn.Disable()
+	}
 	return sh.btn
 }
 func (sh *Shell) back() {
