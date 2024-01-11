@@ -2,17 +2,23 @@ package shell
 
 import (
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
-func (sh *Shell) searchBox() {
-	sh.search.field = &widget.Entry{}
-	sh.search.field.SetPlaceHolder("Поиск...")
-	sh.search.field.Resize(fyne.NewSize(830, 40))
-	sh.search.field.Move(fyne.NewPos(10, 0))
+func (sh *Shell) searchBox() *fyne.Container {
+	sh.entry = &widget.Entry{}
+	sh.entry.SetPlaceHolder("Поиск...")
+	sh.entry.Resize(fyne.NewSize(830, 40))
+	sh.entry.Move(fyne.NewPos(10, 0))
 
-	sh.search.btn = &widget.Button{}
+	btn := sh.button(
+			"",
+			40,
+			850, 0,
+			nil,
+		)
 	icon, _ := fyne.LoadResourceFromPath("img/search.png")
-	sh.search.btn.SetIcon(icon)
-	sh.search.btn.Resize(fyne.NewSize(40, 40))
-	sh.search.btn.Move(fyne.NewPos(850, 0))
+	btn.Icon = icon
+
+	return container.NewWithoutLayout(sh.entry, btn)
 }

@@ -8,15 +8,15 @@ import (
 	"fyne.io/fyne/v2/dialog"
 )
 
-func (sh *Shell) getMenu() {
+func (sh *Shell) menu() {
 	mainMenu := fyne.NewMainMenu(
-		sh.getMenuItems("Каталоги", "catalogs"),
-		sh.getMenuItems("Действия", "actions"),
+		sh.menuItems("Каталоги", "catalogs"),
+		sh.menuItems("Действия", "actions"),
 	)
 	sh.window.SetMainMenu(mainMenu)
 }
 
-func (sh *Shell)getMenuItems(nameMenu, fileMenu string) *fyne.Menu {
+func (sh *Shell) menuItems(nameMenu, fileMenu string) *fyne.Menu {
 	file, _ := os.Open("./pkgs/shell/" + fileMenu + ".txt")
 	defer file.Close()
 	menuItems := []*fyne.MenuItem{}
@@ -25,7 +25,9 @@ func (sh *Shell)getMenuItems(nameMenu, fileMenu string) *fyne.Menu {
 	for scanner.Scan() {
 		switch scanner.Text() {
 		case "Контакты":
-			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {sh.contacts()}))
+			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {
+				sh.contacts()
+			}))
 		default:
 			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), nil))
 		}
@@ -34,6 +36,9 @@ func (sh *Shell)getMenuItems(nameMenu, fileMenu string) *fyne.Menu {
 }
 
 func (sh *Shell) contacts() {
-	dialog.ShowInformation("Контакты", "А вы с какой целью, собственно, интересуетесь?", sh.window)
+	dialog.ShowInformation(
+		"Контакты",
+		"А вы с какой целью, собственно, интересуетесь?",
+		sh.window)
 }
 
