@@ -10,7 +10,7 @@ import (
 type Card struct {
 	id int
 	pic *canvas.Image
-	descript []*canvas.Text
+	// descript []*canvas.Text
 }
 
 type Lib struct {
@@ -23,36 +23,39 @@ type Shell struct{
 	window	fyne.Window
 	entry *widget.Entry
 	btn *widget.Button
+	Lib
 }
 
 func (sh *Shell) build() {
-	l := Lib{}
-	l.NumPic = 5
-	l.NumRowsXls = 5
-	l.id = 5
+	sh.NumRowsXls = 5
 	sh.menu()
+	sh.setContent()
+}
+
+func (sh *Shell) setContent() {
 	searchBox := sh.searchBox()
-	backBtn := sh.button("Назад", 210, 10, 510, nil)
-	if l.id == 2 {
-		backBtn.Disable()
+	reverseBtn := sh.button("Обратная сторона", 437, 10, 450, sh.reverse)
+	preBtn := sh.button("Назад", 210, 10, 510, sh.preCard)
+	if sh.id == 2 {
+		preBtn.Disable()
 	}
-	nextBtn := 	sh.button("Вперед", 210, 237, 510, nil)
-	if l.id == max(l.NumPic, l.NumRowsXls) {
+	nextBtn := 	sh.button("Вперед", 210, 237, 510, sh.nextCard)
+	if sh.id == max(sh.NumPic, sh.NumRowsXls) {
 		nextBtn.Disable()
 	}
-
-	
 
 	cont := container.NewWithoutLayout(
 		searchBox,
 		sh.button("Обратная сторона", 437, 10, 450, nil),
-		backBtn,
+		reverseBtn,
+		preBtn,
 		nextBtn,		
 	)
 	sh.window.SetContent(cont)
 }
 func NewShell(app fyne.App) {
 	sh := Shell{}
+	sh.id = 2
 	sh.window = app.NewWindow("Каталога почтовых карточек с техникой")
 	sh.build()
 	sh.window.Resize(fyne.NewSize(905, 650))
