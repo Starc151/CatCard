@@ -9,7 +9,7 @@ import (
 
 type Card struct {
 	id int
-	pic *canvas.Image
+	picCard *canvas.Image
 	// descript []*canvas.Text
 }
 
@@ -34,6 +34,7 @@ func (sh *Shell) build() {
 
 func (sh *Shell) setContent() {
 	searchBox := sh.searchBox()
+	sh.pic()
 	reverseBtn := sh.button("Обратная сторона", 437, 10, 450, sh.reverse)
 	preBtn := sh.button("Назад", 210, 10, 510, sh.preCard)
 	if sh.id == 2 {
@@ -46,6 +47,7 @@ func (sh *Shell) setContent() {
 
 	cont := container.NewWithoutLayout(
 		searchBox,
+		sh.picCard,
 		sh.button("Обратная сторона", 437, 10, 450, nil),
 		reverseBtn,
 		preBtn,
