@@ -10,7 +10,7 @@ import (
 type Card struct {
 	id int
 	picCard *canvas.Image
-	// descript []*canvas.Text
+	descriptCard []*canvas.Text
 }
 
 type Lib struct {
@@ -35,6 +35,7 @@ func (sh *Shell) build() {
 func (sh *Shell) setContent() {
 	searchBox := sh.searchBox()
 	sh.pic()
+
 	reverseBtn := sh.button("Обратная сторона", 437, 10, 450, sh.reverse)
 	preBtn := sh.button("Назад", 210, 10, 510, sh.preCard)
 	if sh.id == 2 {
@@ -44,11 +45,10 @@ func (sh *Shell) setContent() {
 	if sh.id == max(sh.NumPic, sh.NumRowsXls) {
 		nextBtn.Disable()
 	}
-
 	cont := container.NewWithoutLayout(
 		searchBox,
+		sh.descript(sh.id),
 		sh.picCard,
-		sh.button("Обратная сторона", 437, 10, 450, nil),
 		reverseBtn,
 		preBtn,
 		nextBtn,		
