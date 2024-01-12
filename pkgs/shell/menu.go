@@ -10,7 +10,7 @@ import (
 
 func (sh *Shell) menu() {
 	mainMenu := fyne.NewMainMenu(
-		sh.menuItems("Каталоги", "catalogs"),
+		// sh.menuItems("Каталоги", "catalogs"),
 		sh.menuItems("Действия", "actions"),
 	)
 	sh.window.SetMainMenu(mainMenu)
