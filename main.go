@@ -1,3 +1,5 @@
+// fyne package -os windows -icon img/icon.png
+
 package main
 
 import (
