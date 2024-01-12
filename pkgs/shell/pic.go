@@ -10,13 +10,16 @@ import (
 
 func (sh *Shell) pic() {
 	sh.picCard = &canvas.Image{}
-	if _, err := os.Stat(fmt.Sprintf("pics/%d.jpg", sh.id)); err != nil{
-		if os.IsNotExist(err) {
-			sh.picCard.File = "img/noPhoto.jpg"
-		}
-	} else {
-		sh.picCard.File = fmt.Sprintf("pics/%d.jpg", sh.id)
-	}
+	sh.picCard.File = checkPic(fmt.Sprintf("pics/%d.jpg", sh.id))
 	sh.picCard.Resize(fyne.NewSize(437, 310))
 	sh.picCard.Move(fyne.NewPos(10, 100))
+}
+
+func checkPic(path string) string {
+	if _, err := os.Stat(path); err != nil{
+		if os.IsNotExist(err) {
+			return "img/noPhoto.jpg"
+		}
+	}
+	return path
 }

@@ -1,7 +1,7 @@
 package shell
 
 import (
-	"strconv"
+	"fmt"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
@@ -29,6 +29,8 @@ func (sh *Shell) preCard() {
 }
 
 func (sh *Shell) reverse() {
-
-	dialog.ShowCustom(strconv.Itoa(sh.id), "ok", canvas.NewImageFromFile("pics/2.jpg"), sh.window)
+	path := fmt.Sprintf("pics/back/%d.jpg", sh.id)
+	reversePic := canvas.NewImageFromFile(checkPic(path))
+	reversePic.SetMinSize(fyne.NewSize(437, 310))
+	dialog.ShowCustom("", "ok", reversePic, sh.window)
 }
