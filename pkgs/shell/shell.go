@@ -17,6 +17,7 @@ type card struct {
 }
 
 type lib struct {
+	xlFile *xlsx.File
 	numRowsXls int
 	numPic int
 	card
@@ -30,16 +31,18 @@ type Shell struct{
 }
 
 func (sh *Shell) libData() {
-	xlFile, _ := xlsx.OpenFile("./slu/data.xlsx")
-	sh.numRowsXls = len(xlFile.Sheets[0].Rows)
+	sh.id = 2
+	sh.xlFile = &xlsx.File{}
+	sh.xlFile, _ = xlsx.OpenFile("./slu/data.xlsx")
+	sh.numRowsXls = len(sh.xlFile.Sheets[0].Rows)
 	t, _ := os.ReadDir("pics")
-	sh.numPic = len(t)-1
+	sh.numPic = len(t)
 }
 
 func (sh *Shell) build() {
 	sh.menu()
-	sh.setContent()
 	sh.libData()
+	sh.setContent()
 }
 
 func (sh *Shell) setContent() {
@@ -67,7 +70,6 @@ func (sh *Shell) setContent() {
 }
 func NewShell(app fyne.App) {
 	sh := Shell{}
-	sh.id = 2
 	sh.window = app.NewWindow("Каталога почтовых карточек с техникой")
 	sh.build()
 	sh.window.Resize(fyne.NewSize(905, 650))
