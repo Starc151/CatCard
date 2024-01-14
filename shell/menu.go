@@ -9,9 +9,18 @@ import (
 	"fyne.io/fyne/v2/container"
 )
 
+func (sh *Shell) setCatalogs() {
+	data := ""
+	for _, menuItems := range sh.xlFile.Sheets {
+		data += menuItems.Name+"\n"
+	}
+
+	os.WriteFile("shell/menuItems/catalogs.txt", []byte(data), 0777)
+}
+
 func (sh *Shell) menu() {
 	mainMenu := fyne.NewMainMenu(
-		// sh.menuItems("Каталоги", "catalogs"),
+		sh.menuItems("Каталоги", "catalogs"),
 		sh.menuItems("Действия", "actions"),
 		sh.menuItems("Справка", "help"),
 	)
@@ -44,8 +53,6 @@ func (sh *Shell) menuItems(nameMenu, fileMenu string) *fyne.Menu {
 	}
 	return fyne.NewMenu(nameMenu, menuItems...)
 }
-
-
 
 func (sh *Shell) contacts() {
 	sh.showInformation(		"Контакты", "А вы с какой целью, собственно, интересуетесь?")

@@ -35,14 +35,15 @@ func (sh *Shell) libData() {
 	sh.xlFile = &xlsx.File{}
 	sh.xlFile, _ = xlsx.OpenFile("./slu/data.xlsx")
 	sh.numRowsXls = len(sh.xlFile.Sheets[0].Rows)
-	t, _ := os.ReadDir("pics")
-	sh.numPic = len(t)
+	lenPics, _ := os.ReadDir("pics")
+	sh.numPic = len(lenPics)
 }
 
 func (sh *Shell) build() {
-	sh.menu()
 	sh.libData()
 	sh.setContent()
+	sh.setCatalogs()
+	sh.menu()
 }
 
 func (sh *Shell) setContent() {
