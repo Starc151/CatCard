@@ -9,7 +9,8 @@ import (
 func (sh *Shell) descript() *fyne.Container {
 	sh.descriptCard = append(sh.descriptCard, &canvas.Text{})
 	vBox := container.NewVBox()
-
+	noDiscript := canvas.NewText("Нет данных", nil)
+	noDiscript.TextSize = 20
 	firstRow := sh.xlFile.Sheets[0].Rows[0].Cells
 	if sh.id <= sh.numRowsXls {
 		currentRow := sh.xlFile.Sheets[0].Rows[sh.id-1].Cells
@@ -24,6 +25,8 @@ func (sh *Shell) descript() *fyne.Container {
 				}
 			}
 		}
+	} else {
+		vBox.Add(noDiscript)
 	}
 	layout := container.NewWithoutLayout(vScroll(416, 450, vBox))
 	layout.Move(fyne.NewPos(470, 100))
