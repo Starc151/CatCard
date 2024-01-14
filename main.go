@@ -5,7 +5,7 @@ package main
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"github.com/Starc151/CatCard/pkgs/shell"
+	"github.com/Starc151/CatCard/shell"
 )
 
 func main() {
