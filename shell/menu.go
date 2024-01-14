@@ -36,7 +36,7 @@ func (sh *Shell) menuItems(nameMenu, fileMenu string) *fyne.Menu {
 			}))
 		case "О программе":
 			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {
-				sh.contacts()
+				sh.about()
 			}))
 		default:
 			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), nil))
@@ -48,7 +48,7 @@ func (sh *Shell) menuItems(nameMenu, fileMenu string) *fyne.Menu {
 
 
 func (sh *Shell) contacts() {
-	sh.showInformation(		"Контакты", "А вы с какой целью, собственно, интересуетесь?",)
+	sh.showInformation(		"Контакты", "А вы с какой целью, собственно, интересуетесь?")
 }
 
 func (sh *Shell) help(){
@@ -69,3 +69,8 @@ func (sh *Shell) help(){
 	sh.showCustom("Справка", "ok", layout)
 }
 
+
+func (sh *Shell) about() {
+	sh.showInformation(		"О программе", "Каталог почтовых карточек с различной техникой\n"+
+		"Создан по заказу Npc prodaction")
+}
