@@ -11,10 +11,9 @@ import (
 
 func (sh *Shell) setCatalogs() {
 	data := ""
-	for _, menuItems := range sh.xlFile.Sheets {
-		data += menuItems.Name+"\n"
+	for _, menuItems := range sh.xlFile.GetSheetList() {
+		data += menuItems+"\n"
 	}
-
 	os.WriteFile("shell/menuItems/catalogs.txt", []byte(data), 0777)
 }
 
@@ -27,12 +26,16 @@ func (sh *Shell) menu() {
 	sh.window.SetMainMenu(mainMenu)
 }
 
-func (sh *Shell) menuItems(nameMenu, fileMenu string) *fyne.Menu {
-	file, _ := os.Open("shell/menuItems/" + fileMenu + ".txt")
+func getFile(path string) *bufio.Scanner {
+	file, _ := os.Open(path)
 	defer file.Close()
+	return bufio.NewScanner(file)
+}
+
+func (sh *Shell) menuItems(nameMenu, fileMenu string) *fyne.Menu {
 	menuItems := []*fyne.MenuItem{}
 
-	scanner := bufio.NewScanner(file)
+	scanner := getFile("shell/menuItems/" + fileMenu + ".txt")
 	for scanner.Scan() {
 		switch scanner.Text() {
 		case "Контакты":
@@ -63,9 +66,7 @@ func (sh *Shell) help(){
 	vBox.Resize(fyne.NewSize(240, 490))
 	layout := container.NewWithoutLayout()
 
-	file, _ := os.Open("shell/help/briefInformation.txt")
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
+	scanner := getFile("shell/help/briefInformation.txt")
 	for scanner.Scan() {
 		txt := canvas.Text{}
 		txt.TextSize = 20

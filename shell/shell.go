@@ -7,7 +7,7 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
-	"github.com/tealeg/xlsx"
+	"github.com/xuri/excelize/v2"
 )
 
 type card struct {
@@ -17,7 +17,8 @@ type card struct {
 }
 
 type lib struct {
-	xlFile *xlsx.File
+	xlFile *excelize.File
+	catalogName string
 	numRowsXls int
 	numPic int
 	card
@@ -30,24 +31,36 @@ type Shell struct{
 	lib
 }
 
+func NewShell(app fyne.App) {
+	sh := Shell{}
+	sh.window = app.NewWindow("Каталога почтовых карточек с техникой")
+	sh.build()
+	sh.window.Resize(fyne.NewSize(905, 650))
+	sh.window.SetFixedSize(true)
+	sh.window.CenterOnScreen()
+	sh.window.Show()
+}
+
+func (sh *Shell) build() {
+	sh.menu()
+	sh.libData()
+	sh.setContent()
+	sh.setCatalogs()
+}
+
 func (sh *Shell) libData() {
+	sh.xlFile, _ = excelize.OpenFile("slu/data.xlsx")
 	sh.id = 2
-	sh.xlFile = &xlsx.File{}
-	sh.xlFile, _ = xlsx.OpenFile("./slu/data.xlsx")
-	sh.numRowsXls = len(sh.xlFile.Sheets[0].Rows)
+	sh.catalogName = sh.xlFile.GetSheetList()[0]
+
+	rows, _ := sh.xlFile.GetRows(sh.catalogName)
+	sh.numRowsXls = len(rows)
 	lenPics, _ := os.ReadDir("pics")
 	sh.numPic = len(lenPics)
 }
 
-func (sh *Shell) build() {
-	sh.libData()
-	sh.setContent()
-	sh.setCatalogs()
-	sh.menu()
-}
-
 func (sh *Shell) setContent() {
-	// searchBox := sh.searchBox()
+	searchBox := sh.searchBox()
 	sh.pic()
 
 	reverseBtn := sh.button("Обратная сторона", 437, 10, 450, sh.reverse)
@@ -60,7 +73,7 @@ func (sh *Shell) setContent() {
 		nextBtn.Disable()
 	}
 	cont := container.NewWithoutLayout(
-		// searchBox,
+		searchBox,
 		sh.descript(),
 		sh.picCard,
 		reverseBtn,
@@ -69,12 +82,4 @@ func (sh *Shell) setContent() {
 	)
 	sh.window.SetContent(cont)
 }
-func NewShell(app fyne.App) {
-	sh := Shell{}
-	sh.window = app.NewWindow("Каталога почтовых карточек с техникой")
-	sh.build()
-	sh.window.Resize(fyne.NewSize(905, 650))
-	sh.window.SetFixedSize(true)
-	sh.window.CenterOnScreen()
-	sh.window.Show()
-}
+
