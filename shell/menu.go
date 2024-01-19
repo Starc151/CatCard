@@ -26,16 +26,13 @@ func (sh *Shell) menu() {
 	sh.window.SetMainMenu(mainMenu)
 }
 
-func getFile(path string) *bufio.Scanner {
-	file, _ := os.Open(path)
-	defer file.Close()
-	return bufio.NewScanner(file)
-}
-
 func (sh *Shell) menuItems(nameMenu, fileMenu string) *fyne.Menu {
 	menuItems := []*fyne.MenuItem{}
 
-	scanner := getFile("shell/menuItems/" + fileMenu + ".txt")
+	file, _ := os.Open("shell/menuItems/" + fileMenu + ".txt")
+	scanner := bufio.NewScanner(file)
+	defer file.Close()
+
 	for scanner.Scan() {
 		switch scanner.Text() {
 		case "Контакты":
@@ -49,6 +46,11 @@ func (sh *Shell) menuItems(nameMenu, fileMenu string) *fyne.Menu {
 		case "О программе":
 			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {
 				sh.about()
+			}))
+		case "Автомобильная техника", "Водный транспорт":
+			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {
+				sh.catalogName = scanner.Text()
+				sh.setContent()
 			}))
 		default:
 			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), nil))
@@ -66,7 +68,10 @@ func (sh *Shell) help(){
 	vBox.Resize(fyne.NewSize(240, 490))
 	layout := container.NewWithoutLayout()
 
-	scanner := getFile("shell/help/briefInformation.txt")
+	file, _ := os.Open("shell/help/briefInformation.txt")
+	scanner := bufio.NewScanner(file)
+	defer file.Close()
+
 	for scanner.Scan() {
 		txt := canvas.Text{}
 		txt.TextSize = 20

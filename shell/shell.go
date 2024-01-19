@@ -55,8 +55,8 @@ func (sh *Shell) libData() {
 
 	rows, _ := sh.xlFile.GetRows(sh.catalogName)
 	sh.numRowsXls = len(rows)
-	lenPics, _ := os.ReadDir("pics")
-	sh.numPic = len(lenPics)
+	lenPics, _ := os.ReadDir("pics/" + sh.catalogName)
+	sh.numPic = len(lenPics) - 1
 }
 
 func (sh *Shell) setContent() {
