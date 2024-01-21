@@ -9,29 +9,26 @@ import (
 	"fyne.io/fyne/v2/container"
 )
 
-// func (sh *Shell) setCatalogs() []*fyne.MenuItem {
-// 	catalogs := ""
-// 	menuCatalogs := []*fyne.MenuItem{}
-// 	for _, sheetName := range sh.xlFile.GetSheetList() {
+func (sh *Shell) setCatalogs() []*fyne.MenuItem {
+	catalogs := ""
+	menuCatalogs := []*fyne.MenuItem{}
+	for _, sheetName := range sh.xlFile.GetSheetList() {
+		catalogs += sheetName+"\n"
+		temp := sheetName
+		menuCatalogs = append(menuCatalogs, fyne.NewMenuItem(sheetName, func() {sh.setCatalogName(temp)}))
+	}
+	os.WriteFile("shell/menuItems/catalogs.txt", []byte(catalogs), 0777)
+	return menuCatalogs
+}
 
-
-
-// 		catalogs += sheetName+"\n"
-// 		menuCatalogs = append(menuCatalogs, fyne.NewMenuItem(sheetName, func() {sh.setCatalogName(sheetName)})) //{sh.setCatalogName(sheetName)}
-// 	}
-// 	os.WriteFile("shell/menuItems/catalogs.txt", []byte(catalogs), 0777)
-// 	return menuCatalogs
-// }
-
-// func (sh *Shell) setCatalogName(catalogName string) {
-// 	sh.catalogName = catalogName
-// 	sh.setContent()
-// 	fmt.Println(sh.catalogName)
-// }
+func (sh *Shell) setCatalogName(catalogName string) {
+	sh.catalogName = catalogName
+	sh.setContent()
+}
 
 func (sh *Shell) menu() {
 	mainMenu := fyne.NewMainMenu(
-		// fyne.NewMenu("Каталоги", sh.setCatalogs()...),
+		fyne.NewMenu("Каталоги", sh.setCatalogs()...),
 		fyne.NewMenu("Действия", sh.menuItems("Действия", "actions")...),
 		fyne.NewMenu("Справка", sh.menuItems("Справка", "help")...),
 	)

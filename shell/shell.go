@@ -1,6 +1,7 @@
 package shell
 
 import (
+	"fmt"
 	"os"
 
 	"fyne.io/fyne/v2"
@@ -38,7 +39,7 @@ func NewShell(app fyne.App) {
 	sh.id = 2
 	sh.catalogName = sh.xlFile.GetSheetList()[0]
 	sh.lenLib()
-	// sh.menu()
+	sh.menu()
 	sh.setContent()
 	sh.window.Resize(fyne.NewSize(905, 650))
 	sh.window.SetFixedSize(true)
@@ -74,6 +75,8 @@ func (sh *Shell) setContent() {
 		preBtn,
 		nextBtn,		
 	)
+	fmt.Println(sh.numPic)
+	fmt.Println(sh.numRowsXls)
 	sh.window.SetContent(cont)
 }
 
