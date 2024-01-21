@@ -34,25 +34,19 @@ type Shell struct{
 func NewShell(app fyne.App) {
 	sh := Shell{}
 	sh.window = app.NewWindow("Каталога почтовых карточек с техникой")
-	sh.build()
+	sh.xlFile, _ = excelize.OpenFile("slu/data.xlsx")
+	sh.id = 2
+	sh.catalogName = sh.xlFile.GetSheetList()[0]
+	sh.lenLib()
+	// sh.menu()
+	sh.setContent()
 	sh.window.Resize(fyne.NewSize(905, 650))
 	sh.window.SetFixedSize(true)
 	sh.window.CenterOnScreen()
 	sh.window.Show()
 }
 
-func (sh *Shell) build() {
-	sh.menu()
-	sh.libData()
-	sh.setContent()
-	sh.setCatalogs()
-}
-
-func (sh *Shell) libData() {
-	sh.xlFile, _ = excelize.OpenFile("slu/data.xlsx")
-	sh.id = 2
-	sh.catalogName = sh.xlFile.GetSheetList()[0]
-
+func (sh *Shell) lenLib() {
 	rows, _ := sh.xlFile.GetRows(sh.catalogName)
 	sh.numRowsXls = len(rows)
 	lenPics, _ := os.ReadDir("pics/" + sh.catalogName)

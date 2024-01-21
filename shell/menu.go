@@ -9,24 +9,36 @@ import (
 	"fyne.io/fyne/v2/container"
 )
 
-func (sh *Shell) setCatalogs() {
-	data := ""
-	for _, menuItems := range sh.xlFile.GetSheetList() {
-		data += menuItems+"\n"
-	}
-	os.WriteFile("shell/menuItems/catalogs.txt", []byte(data), 0777)
-}
+// func (sh *Shell) setCatalogs() []*fyne.MenuItem {
+// 	catalogs := ""
+// 	menuCatalogs := []*fyne.MenuItem{}
+// 	for _, sheetName := range sh.xlFile.GetSheetList() {
+
+
+
+// 		catalogs += sheetName+"\n"
+// 		menuCatalogs = append(menuCatalogs, fyne.NewMenuItem(sheetName, func() {sh.setCatalogName(sheetName)})) //{sh.setCatalogName(sheetName)}
+// 	}
+// 	os.WriteFile("shell/menuItems/catalogs.txt", []byte(catalogs), 0777)
+// 	return menuCatalogs
+// }
+
+// func (sh *Shell) setCatalogName(catalogName string) {
+// 	sh.catalogName = catalogName
+// 	sh.setContent()
+// 	fmt.Println(sh.catalogName)
+// }
 
 func (sh *Shell) menu() {
 	mainMenu := fyne.NewMainMenu(
-		sh.menuItems("Каталоги", "catalogs"),
-		sh.menuItems("Действия", "actions"),
-		sh.menuItems("Справка", "help"),
+		// fyne.NewMenu("Каталоги", sh.setCatalogs()...),
+		fyne.NewMenu("Действия", sh.menuItems("Действия", "actions")...),
+		fyne.NewMenu("Справка", sh.menuItems("Справка", "help")...),
 	)
 	sh.window.SetMainMenu(mainMenu)
 }
 
-func (sh *Shell) menuItems(nameMenu, fileMenu string) *fyne.Menu {
+func (sh *Shell) menuItems(nameMenu, fileMenu string) []*fyne.MenuItem {
 	menuItems := []*fyne.MenuItem{}
 
 	file, _ := os.Open("shell/menuItems/" + fileMenu + ".txt")
@@ -39,7 +51,7 @@ func (sh *Shell) menuItems(nameMenu, fileMenu string) *fyne.Menu {
 			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {
 				sh.contacts()
 			}))
-		case "Посмотреть правку":
+		case "Посмотреть справку":
 			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {
 				sh.help()
 			}))
@@ -47,16 +59,10 @@ func (sh *Shell) menuItems(nameMenu, fileMenu string) *fyne.Menu {
 			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {
 				sh.about()
 			}))
-		case "Автомобильная техника", "Водный транспорт":
-			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), func() {
-				sh.catalogName = scanner.Text()
-				sh.setContent()
-			}))
-		default:
-			menuItems = append(menuItems, fyne.NewMenuItem(scanner.Text(), nil))
 		}
 	}
-	return fyne.NewMenu(nameMenu, menuItems...)
+	sh.setContent()
+	return menuItems
 }
 
 func (sh *Shell) contacts() {
@@ -81,7 +87,6 @@ func (sh *Shell) help(){
 	layout.Add(vBox)
 	sh.showCustom("Справка", "ok", layout)
 }
-
 
 func (sh *Shell) about() {
 	sh.showInformation(		"О программе", "Каталог почтовых карточек с различной техникой\n"+
