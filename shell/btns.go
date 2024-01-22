@@ -18,7 +18,7 @@ func (sh *Shell) preCard() {
 }
 
 func (sh *Shell) reverse() {
-	path := fmt.Sprintf("pics/back/%d.jpg", sh.id)
+	path := fmt.Sprintf("pics/%s/back/%d.jpg", sh.catalogName, sh.id)
 	reversePic := canvas.NewImageFromFile(checkPic(path))
 	reversePic.SetMinSize(fyne.NewSize(437, 310))
 	sh.showCustom("", "ok", reversePic)

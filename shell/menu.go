@@ -23,6 +23,7 @@ func (sh *Shell) setCatalogs() []*fyne.MenuItem {
 
 func (sh *Shell) setCatalogName(catalogName string) {
 	sh.catalogName = catalogName
+	sh.id = 2
 	sh.setContent()
 }
 

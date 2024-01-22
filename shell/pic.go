@@ -10,7 +10,7 @@ import (
 
 func (sh *Shell) pic() {
 	sh.picCard = &canvas.Image{}
-	sh.picCard.File = checkPic(fmt.Sprintf("pics/%d.jpg", sh.id))
+	sh.picCard.File = checkPic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, sh.id))
 	sh.picCard.Resize(fyne.NewSize(437, 310))
 	sh.picCard.Move(fyne.NewPos(10, 100))
 }

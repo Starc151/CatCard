@@ -1,8 +1,8 @@
 package shell
 
 import (
-	"fmt"
 	"os"
+	"path/filepath"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
@@ -17,11 +17,10 @@ type card struct {
 	descriptCard []*canvas.Text
 }
 
-type lib struct {
+type catalog struct {
 	xlFile *excelize.File
 	catalogName string
-	numRowsXls int
-	numPic int
+	lenCatalog int
 	card
 }
 
@@ -29,7 +28,7 @@ type Shell struct{
 	window	fyne.Window
 	entry *widget.Entry
 	btn *widget.Button
-	lib
+	catalog
 }
 
 func NewShell(app fyne.App) {
@@ -38,7 +37,6 @@ func NewShell(app fyne.App) {
 	sh.xlFile, _ = excelize.OpenFile("slu/data.xlsx")
 	sh.id = 2
 	sh.catalogName = sh.xlFile.GetSheetList()[0]
-	sh.lenLib()
 	sh.menu()
 	sh.setContent()
 	sh.window.Resize(fyne.NewSize(905, 650))
@@ -47,24 +45,32 @@ func NewShell(app fyne.App) {
 	sh.window.Show()
 }
 
-func (sh *Shell) lenLib() {
+func (sh *Shell) getlenCatalog() {
 	rows, _ := sh.xlFile.GetRows(sh.catalogName)
-	sh.numRowsXls = len(rows)
-	lenPics, _ := os.ReadDir("pics/" + sh.catalogName)
-	sh.numPic = len(lenPics) - 1
+	numsPics := 0
+	numObjcts, _ := os.ReadDir("pics/" + sh.catalogName)
+	for  _, isJgp := range numObjcts {
+		if !isJgp.IsDir() {
+			if filepath.Ext(isJgp.Name()) == ".jpg" {
+				numsPics++
+			}
+		}
+	}
+	sh.lenCatalog = max(numsPics, len(rows))
 }
 
 func (sh *Shell) setContent() {
+	sh.getlenCatalog()
 	searchBox := sh.searchBox()
 	sh.pic()
 
 	reverseBtn := sh.button("Обратная сторона", 437, 10, 450, sh.reverse)
 	preBtn := sh.button("Назад", 210, 10, 510, sh.preCard)
-	if sh.id == 2 {
+	if sh.id <= 2 {
 		preBtn.Disable()
 	}
 	nextBtn := 	sh.button("Вперед", 210, 237, 510, sh.nextCard)
-	if sh.id == max(sh.numPic, sh.numRowsXls) {
+	if sh.id >= sh.lenCatalog {
 		nextBtn.Disable()
 	}
 	cont := container.NewWithoutLayout(
@@ -75,8 +81,6 @@ func (sh *Shell) setContent() {
 		preBtn,
 		nextBtn,		
 	)
-	fmt.Println(sh.numPic)
-	fmt.Println(sh.numRowsXls)
 	sh.window.SetContent(cont)
 }
 
