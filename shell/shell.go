@@ -1,6 +1,7 @@
 package shell
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -14,7 +15,6 @@ import (
 type card struct {
 	id int
 	picCard *canvas.Image
-	descriptCard []*canvas.Text
 }
 
 type catalog struct {
@@ -50,10 +50,8 @@ func (sh *Shell) getlenCatalog() {
 	numsPics := 0
 	numObjcts, _ := os.ReadDir("pics/" + sh.catalogName)
 	for  _, isJgp := range numObjcts {
-		if !isJgp.IsDir() {
-			if filepath.Ext(isJgp.Name()) == ".jpg" {
-				numsPics++
-			}
+		if filepath.Ext(isJgp.Name()) == ".jpg" {
+			numsPics++
 		}
 	}
 	sh.lenCatalog = max(numsPics, len(rows) - 1)
@@ -73,8 +71,17 @@ func (sh *Shell) setContent() {
 	if sh.id > sh.lenCatalog{
 		nextBtn.Disable()
 	}
+	catalogName := sh.button(
+		fmt.Sprintf("Посмотреть весь каталог \"%s\" ", sh.catalogName),
+		880,
+		10, 50,
+		nil,
+	)
+
 	cont := container.NewWithoutLayout(
 		searchBox,
+		catalogName,
+		catalogName,
 		sh.descript(),
 		sh.picCard,
 		reverseBtn,
