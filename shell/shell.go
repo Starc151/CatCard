@@ -56,7 +56,7 @@ func (sh *Shell) getlenCatalog() {
 			}
 		}
 	}
-	sh.lenCatalog = max(numsPics, len(rows))
+	sh.lenCatalog = max(numsPics, len(rows) - 1)
 }
 
 func (sh *Shell) setContent() {
@@ -70,7 +70,7 @@ func (sh *Shell) setContent() {
 		preBtn.Disable()
 	}
 	nextBtn := 	sh.button("Вперед", 210, 237, 510, sh.nextCard)
-	if sh.id >= sh.lenCatalog {
+	if sh.id > sh.lenCatalog{
 		nextBtn.Disable()
 	}
 	cont := container.NewWithoutLayout(
