@@ -9,7 +9,6 @@ import (
 func (sh *Shell) descript() *fyne.Container {
 	vBox := container.NewVBox()
 	noDiscript := canvas.NewText("Нет данных", nil)
-	noDiscript.TextSize = 20
 	rows, _ := sh.xlFile.GetRows(sh.catalogName)
 
 	vBox.Add(noDiscript)
@@ -18,7 +17,6 @@ func (sh *Shell) descript() *fyne.Container {
 		vBox.RemoveAll()
 		for numCell := 0; numCell <  min(len(rows[0]), len(rows[sh.id-1])) ; numCell++ {
 			descript := canvas.NewText(rows[0][numCell]+" "+rows[sh.id-1][numCell], nil)
-			descript.TextSize = 20
 			if rows[sh.id-1][numCell] != "" {
 				vBox.Add(descript)
 			}

@@ -77,7 +77,7 @@ func (sh *Shell) help(){
 
 	for scanner.Scan() {
 		txt := canvas.Text{}
-		txt.TextSize = 20
+		txt.TextSize = 14
 		txt.Text = scanner.Text()
 		vBox.Add(&txt)
 	}
