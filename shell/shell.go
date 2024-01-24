@@ -57,14 +57,23 @@ func (sh *Shell) getlenCatalog() {
 	sh.lenCatalog = max(numsPics, len(rows) - 1)
 }
 
-func emptyCont() *fyne.Container {
-	cont := container.NewCenter(
-		container.NewVBox(
-		container.NewCenter(canvas.NewText("Каталог пустой!", nil)),		
-		canvas.NewText("Выберите другой каталог", nil),
-		canvas.NewText("Или заполните xlsx-файл ", nil),),
-	)
+func (sh *Shell) emptyCont() *fyne.Container {
 	
+	cont := container.NewVBox(
+		sh.searchBox(),
+		container.NewCenter(
+			container.NewVBox(
+				canvas.NewText("", nil),
+				canvas.NewText("", nil),
+				canvas.NewText("", nil),
+				canvas.NewText("", nil),
+				container.NewCenter(canvas.NewText("Каталог пустой!", nil)),
+				container.NewCenter(canvas.NewText("Выберите другой каталог,", nil)),
+				container.NewCenter(canvas.NewText("воспользуйтесь поиском", nil)),
+				container.NewCenter(canvas.NewText("или заполните exel-файл", nil)),
+			),
+		),	
+	)
 	return cont
 }
 
@@ -101,7 +110,7 @@ func (sh *Shell) setContent() {
 	)
 	if sh.lenCatalog == 0 {
 		cont.RemoveAll()
-		cont = emptyCont()
+		cont = sh.emptyCont()
 	}
 
 	sh.window.SetContent(cont)
