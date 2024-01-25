@@ -14,7 +14,6 @@ import (
 
 type card struct {
 	id int
-	picCard *canvas.Image
 }
 
 type catalog struct {
@@ -79,7 +78,6 @@ func (sh *Shell) emptyCont() *fyne.Container {
 
 func (sh *Shell) setContent() {
 	sh.getlenCatalog()
-	sh.pic()
 
 	reverseBtn := sh.button("Обратная сторона", 437, 10, 450, sh.reverse)
 	preBtn := sh.button("Назад", 210, 10, 510, sh.preCard)
@@ -90,19 +88,18 @@ func (sh *Shell) setContent() {
 	if sh.id > sh.lenCatalog{
 		nextBtn.Disable()
 	}
-	catalogName := sh.button(
+	allCatalog := sh.button(
 		fmt.Sprintf("Посмотреть весь каталог \"%s\" ", sh.catalogName),
 		880,
 		10, 50,
-		nil,
+		sh.showAllCatalog,
 	)
 
 	cont := container.NewWithoutLayout(
 		sh.searchBox(),
-		catalogName,
-		catalogName,
+		allCatalog,
 		sh.descript(),
-		sh.picCard,
+		sh.pic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, sh.id)),
 		reverseBtn,
 		preBtn,
 		nextBtn,		

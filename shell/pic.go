@@ -1,18 +1,17 @@
 package shell
 
 import (
-	"fmt"
 	"os"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 )
 
-func (sh *Shell) pic() {
-	sh.picCard = &canvas.Image{}
-	sh.picCard.File = checkPic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, sh.id))
-	sh.picCard.Resize(fyne.NewSize(437, 310))
-	sh.picCard.Move(fyne.NewPos(10, 100))
+func (sh *Shell) pic(path string) *canvas.Image {
+	picCard := canvas.NewImageFromFile(checkPic(path))
+	picCard.Resize(fyne.NewSize(437, 310))
+	picCard.Move(fyne.NewPos(10, 100))
+	return picCard
 }
 
 func checkPic(path string) string {
