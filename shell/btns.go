@@ -26,10 +26,16 @@ func (sh *Shell) reverse() {
 
 func (sh *Shell) showAllCatalog() {
 	allCatalog := [][3]int{} //*canvas.Image{}
-	
-	for i := 0; i < sh.lenCatalog/3+1; i++{
-		allCatalog = append(allCatalog, [3]int{1,2,3})
+	n := 2
+	for k := 0; k < sh.lenCatalog/4+1; k++ {
+		temp := [3]int{}
+		for i := 0; i < 3; i++ {
+			temp[i] = n
+			n++
+		}
+		allCatalog = append(allCatalog, temp)
 	}
+
 	
 
 	fmt.Println(allCatalog)
