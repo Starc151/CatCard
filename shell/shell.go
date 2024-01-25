@@ -79,7 +79,6 @@ func (sh *Shell) emptyCont() *fyne.Container {
 
 func (sh *Shell) setContent() {
 	sh.getlenCatalog()
-	searchBox := sh.searchBox()
 	sh.pic()
 
 	reverseBtn := sh.button("Обратная сторона", 437, 10, 450, sh.reverse)
@@ -99,7 +98,7 @@ func (sh *Shell) setContent() {
 	)
 
 	cont := container.NewWithoutLayout(
-		searchBox,
+		sh.searchBox(),
 		catalogName,
 		catalogName,
 		sh.descript(),
