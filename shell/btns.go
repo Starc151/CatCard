@@ -25,20 +25,19 @@ func (sh *Shell) reverse() {
 }
 
 func (sh *Shell) showAllCatalog() {
-	allCatalog := [][3]int{} //*canvas.Image{}
-	n := 2
-	for k := 0; k < sh.lenCatalog/4+1; k++ {
-		temp := [3]int{}
-		for i := 0; i < 3; i++ {
-			temp[i] = n
-			n++
+	allCatalog := [][]*canvas.Image{}
+	numPic := 2
+	for i := 0; i < sh.lenCatalog/3+1; i++ {
+		row := []*canvas.Image{}
+		for r := 0; r < 3; r++ {
+			if numPic <= sh.lenCatalog + 1 {
+				picCard := sh.pic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, numPic))
+				picCard.Resize(fyne.NewSize(218, 155))
+				row = append(row, picCard)
+			}
+			numPic++
 		}
-		allCatalog = append(allCatalog, temp)
+		allCatalog = append(allCatalog, row)
 	}
-
-	
-
 	fmt.Println(allCatalog)
 }
-
-// sh.lenCatalog/3+0
