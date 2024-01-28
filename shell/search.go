@@ -13,7 +13,7 @@ func (sh *Shell) searchBox() *fyne.Container {
 
 	btn := sh.button(
 			"",
-			40,
+			40, 40,
 			850, 0,
 			nil,
 		)

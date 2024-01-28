@@ -5,16 +5,18 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/layout"
 )
 
 func (sh *Shell) nextCard() {
 	sh.id++
-	sh.setContent()
+	sh.showCard()
 }
 
 func (sh *Shell) preCard() {
 	sh.id--
-	sh.setContent()
+	sh.showCard()
 }
 
 func (sh *Shell) reverse() {
@@ -25,19 +27,42 @@ func (sh *Shell) reverse() {
 }
 
 func (sh *Shell) showAllCatalog() {
-	allCatalog := [][]*canvas.Image{}
+	cont := container.NewVBox(sh.searchBox())
 	numPic := 2
-	for i := 0; i < sh.lenCatalog/3+1; i++ {
-		row := []*canvas.Image{}
-		for r := 0; r < 3; r++ {
+	lenRow := 3
+	lenCatalog := sh.lenCatalog/lenRow + 1
+	var yPos float32 = 60
+	for i := 0; i < lenCatalog; i++ {
+		var xPos float32 = 10
+		for r := 0; r <  lenRow; r++ {
 			if numPic <= sh.lenCatalog + 1 {
 				picCard := sh.pic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, numPic))
-				picCard.Resize(fyne.NewSize(218, 155))
-				row = append(row, picCard)
+				btnCard := sh.button(
+					"", 218, 155,
+					0, 0, nil,
+				)
+				row := container.NewWithoutLayout(container.New(
+					layout.NewStackLayout(), btnCard, picCard,
+				))
+				row.Resize(fyne.NewSize(276, 195))
+				row.Move(fyne.NewPos(xPos, yPos))
+				xPos += 296
+				cont.Add(row)
 			}
 			numPic++
 		}
-		allCatalog = append(allCatalog, row)
+		yPos += 215
 	}
-	fmt.Println(allCatalog)
+	// cont.RemoveAll()
+	// // cont = container.NewVBox()
+	// var ii float32 = 0
+	// for i := 0; i < 100; i++ {
+	// 	t := canvas.NewText("jhk", nil)
+	// 	t.Move(fyne.NewPos(10, ii))
+	// 	ii += 20
+	// 	cont.Add(t)
+	// }
+	// contVBox := container.NewVBox(cont)
+	
+	sh.setContent(cont)
 }

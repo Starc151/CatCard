@@ -37,8 +37,8 @@ func NewShell(app fyne.App) {
 	sh.id = 2
 	sh.catalogName = sh.xlFile.GetSheetList()[0]
 	sh.menu()
-	sh.setContent()
-	sh.window.Resize(fyne.NewSize(905, 650))
+	sh.showCard()
+	sh.window.Resize(fyne.NewSize(905, 600))
 	sh.window.SetFixedSize(true)
 	sh.window.CenterOnScreen()
 	sh.window.Show()
@@ -76,21 +76,21 @@ func (sh *Shell) emptyCont() *fyne.Container {
 	return cont
 }
 
-func (sh *Shell) setContent() {
+func (sh *Shell) showCard() {
 	sh.getlenCatalog()
 
-	reverseBtn := sh.button("Обратная сторона", 437, 10, 450, sh.reverse)
-	preBtn := sh.button("Назад", 210, 10, 510, sh.preCard)
+	reverseBtn := sh.button("Обратная сторона", 437, 40, 10, 450, sh.reverse)
+	preBtn := sh.button("Назад", 210, 40, 10, 510, sh.preCard)
 	if sh.id <= 2 {
 		preBtn.Disable()
 	}
-	nextBtn := 	sh.button("Вперед", 210, 237, 510, sh.nextCard)
+	nextBtn := 	sh.button("Вперед", 210, 40, 237, 510, sh.nextCard)
 	if sh.id > sh.lenCatalog{
 		nextBtn.Disable()
 	}
 	allCatalog := sh.button(
 		fmt.Sprintf("Посмотреть весь каталог \"%s\" ", sh.catalogName),
-		880,
+		880, 40,
 		10, 50,
 		sh.showAllCatalog,
 	)
@@ -108,7 +108,10 @@ func (sh *Shell) setContent() {
 		cont.RemoveAll()
 		cont = sh.emptyCont()
 	}
+	sh.setContent(cont)	
+}
 
+func (sh *Shell) setContent(cont fyne.CanvasObject) {
 	sh.window.SetContent(cont)
 }
 
