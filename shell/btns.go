@@ -7,6 +7,7 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
+	// "fyne.io/fyne/v2/widget"
 )
 
 func (sh *Shell) nextCard() {
@@ -27,42 +28,56 @@ func (sh *Shell) reverse() {
 }
 
 func (sh *Shell) showAllCatalog() {
-	cont := container.NewVBox(sh.searchBox())
 	numPic := 2
-	lenRow := 3
-	lenCatalog := sh.lenCatalog/lenRow + 1
-	var yPos float32 = 60
-	for i := 0; i < lenCatalog; i++ {
-		var xPos float32 = 10
-		for r := 0; r <  lenRow; r++ {
-			if numPic <= sh.lenCatalog + 1 {
-				picCard := sh.pic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, numPic))
-				btnCard := sh.button(
-					"", 218, 155,
-					0, 0, nil,
-				)
-				row := container.NewWithoutLayout(container.New(
-					layout.NewStackLayout(), btnCard, picCard,
-				))
-				row.Resize(fyne.NewSize(276, 195))
-				row.Move(fyne.NewPos(xPos, yPos))
-				xPos += 296
-				cont.Add(row)
-			}
-			numPic++
-		}
-		yPos += 215
+	var x float32 = 0 
+	mainCont := container.NewWithoutLayout(sh.searchBox())
+	l := container.NewGridWithColumns(4)
+	for i := 0; i <= sh.lenCatalog; i++{
+		c := container.New(
+			layout.NewStackLayout(),
+			sh.button(
+				"", 195, 109,
+				0, 0, func() {fmt.Println("asd")},
+			),
+			sh.pic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, numPic)),
+		)
+		c.Resize(fyne.NewSize(195, 109))
+		c.Move(fyne.NewPos(10, x))
+		nl := container.NewWithoutLayout(c)
+		l.Add(nl)
+		numPic++
+		x += 119
 	}
-	// cont.RemoveAll()
-	// // cont = container.NewVBox()
-	// var ii float32 = 0
-	// for i := 0; i < 100; i++ {
-	// 	t := canvas.NewText("jhk", nil)
-	// 	t.Move(fyne.NewPos(10, ii))
-	// 	ii += 20
-	// 	cont.Add(t)
-	// }
-	// contVBox := container.NewVBox(cont)
 	
-	sh.setContent(cont)
+	vScroll := container.NewVScroll(l)
+	vScroll.Resize(fyne.NewSize(890, 480))
+	vScroll.Move(fyne.NewPos(10, 60))
+
+	mainCont.Add(vScroll)
+	// numPic := 2
+	// cont := container.NewWithoutLayout(sh.searchBox())
+	// grid := container.NewGridWithColumns(4)
+	// grid.Resize(fyne.NewSize(890, 580))
+	// for i := 0; i < sh.lenCatalog; i++ {
+	// 	card := container.New(
+	// 		layout.NewStackLayout(),
+	// 		sh.button(
+	// 			"", 218, 155,
+	// 			0, 0, nil,
+	// 		),
+	// 		sh.pic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, numPic)),
+	// 	)
+	// 	card.Resize(fyne.NewSize(195, 109))
+	// 	columnsGrid  := container.NewWithoutLayout(card)
+
+	// 	grid.Add(columnsGrid )
+	// 	numPic++
+	// }
+
+	// vScroll := container.NewVScroll(grid)
+	// vScroll.Resize(fyne.NewSize(890, 580))
+	// vScroll.Move(fyne.NewPos(10, 50))
+
+	// cont.Add(vScroll)
+	sh.setContent(mainCont)
 }
