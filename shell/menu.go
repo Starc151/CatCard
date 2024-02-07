@@ -24,7 +24,7 @@ func (sh *Shell) setCatalogs() []*fyne.MenuItem {
 func (sh *Shell) setCatalogName(catalogName string) {
 	sh.catalogName = catalogName
 	sh.id = 2
-	sh.showCard()
+	sh.showAllCatalog()
 }
 
 func (sh *Shell) menu() {
@@ -58,7 +58,6 @@ func (sh *Shell) menuItems(nameMenu, fileMenu string) []*fyne.MenuItem {
 			}))
 		}
 	}
-	sh.showCard()
 	return menuItems
 }
 

@@ -37,7 +37,7 @@ func NewShell(app fyne.App) {
 	sh.id = 2
 	sh.catalogName = sh.xlFile.GetSheetList()[0]
 	sh.menu()
-	sh.showCard()
+	sh.showAllCatalog()
 	sh.window.Resize(fyne.NewSize(905, 600))
 	sh.window.SetFixedSize(true)
 	sh.window.CenterOnScreen()
@@ -66,7 +66,10 @@ func (sh *Shell) emptyCont() *fyne.Container {
 				canvas.NewText("", nil),
 				canvas.NewText("", nil),
 				canvas.NewText("", nil),
-				container.NewCenter(canvas.NewText("Каталог пустой!", nil)),
+				container.NewCenter(canvas.NewText(
+					fmt.Sprintf("Каталог \"%s\" пустой!", sh.catalogName),
+					nil),
+				),
 				container.NewCenter(canvas.NewText("Выберите другой каталог,", nil)),
 				container.NewCenter(canvas.NewText("воспользуйтесь поиском", nil)),
 				container.NewCenter(canvas.NewText("или заполните exel-файл", nil)),
@@ -104,10 +107,6 @@ func (sh *Shell) showCard() {
 		preBtn,
 		nextBtn,		
 	)
-	if sh.lenCatalog == 0 {
-		cont.RemoveAll()
-		cont = sh.emptyCont()
-	}
 	sh.setContent(cont)	
 }
 
