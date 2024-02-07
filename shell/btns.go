@@ -29,17 +29,11 @@ func (sh *Shell) reverse() {
 func (sh *Shell) showAllCatalog() {
 	sh.getlenCatalog()
 	catalogNameText := canvas.NewText(sh.catalogName, nil)
-	catalogNameText.Alignment = fyne.TextAlignCenter
-	catalogName := container.NewHBox(
-		container.NewAdaptiveGrid(3,
-			catalogNameText,
-			catalogNameText,
-			catalogNameText,
-		),
-	)
 
-	
-	catalogName.Move(fyne.NewPos(10, 60))
+
+	catalogName := container.New(layout.NewCenterLayout(), catalogNameText)
+	catalogName.Resize(fyne.NewSize(890, 70))
+	catalogName.Move(fyne.NewPos(10, 20))
 	cont := container.NewWithoutLayout(sh.searchBox(), catalogName)
 	if sh.lenCatalog == 0 {
 		cont = sh.emptyCont()
@@ -66,8 +60,8 @@ func (sh *Shell) showAllCatalog() {
 	}
 	
 	vScroll := container.NewVScroll(gridColumns)
-	vScroll.Resize(fyne.NewSize(890, 440))
-	vScroll.Move(fyne.NewPos(10, 100))
+	vScroll.Resize(fyne.NewSize(890, 460))
+	vScroll.Move(fyne.NewPos(10, 80))
 	cont.Add(vScroll)
 	sh.setContent(cont)
 }
