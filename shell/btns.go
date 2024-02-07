@@ -29,55 +29,28 @@ func (sh *Shell) reverse() {
 
 func (sh *Shell) showAllCatalog() {
 	numPic := 2
-	var x float32 = 0 
-	mainCont := container.NewWithoutLayout(sh.searchBox())
-	l := container.NewGridWithColumns(4)
-	for i := 0; i <= sh.lenCatalog; i++{
-		c := container.New(
+	cont := container.NewWithoutLayout(sh.searchBox())
+	gridColumns := container.NewGridWithColumns(4)
+	for i := 0; i < sh.lenCatalog; i++{
+		pic := sh.pic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, numPic))
+		pic.SetMinSize(fyne.NewSize(195, 109))
+		contCard := container.New(
 			layout.NewStackLayout(),
 			sh.button(
 				"", 195, 109,
-				0, 0, func() {fmt.Println("asd")},
+				0, 0, func() {fmt.Println(numPic)},
 			),
-			sh.pic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, numPic)),
+			pic,
 		)
-		c.Resize(fyne.NewSize(195, 109))
-		c.Move(fyne.NewPos(10, x))
-		nl := container.NewWithoutLayout(c)
-		l.Add(nl)
+		contCard.Resize(fyne.NewSize(195, 109))
+		gridColumns.Add(container.NewWithoutLayout(contCard))
 		numPic++
-		x += 119
 	}
 	
-	vScroll := container.NewVScroll(l)
+	vScroll := container.NewVScroll(gridColumns)
 	vScroll.Resize(fyne.NewSize(890, 480))
 	vScroll.Move(fyne.NewPos(10, 60))
 
-	mainCont.Add(vScroll)
-	// numPic := 2
-	// cont := container.NewWithoutLayout(sh.searchBox())
-	// grid := container.NewGridWithColumns(4)
-	// grid.Resize(fyne.NewSize(890, 580))
-	// for i := 0; i < sh.lenCatalog; i++ {
-	// 	card := container.New(
-	// 		layout.NewStackLayout(),
-	// 		sh.button(
-	// 			"", 218, 155,
-	// 			0, 0, nil,
-	// 		),
-	// 		sh.pic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, numPic)),
-	// 	)
-	// 	card.Resize(fyne.NewSize(195, 109))
-	// 	columnsGrid  := container.NewWithoutLayout(card)
-
-	// 	grid.Add(columnsGrid )
-	// 	numPic++
-	// }
-
-	// vScroll := container.NewVScroll(grid)
-	// vScroll.Resize(fyne.NewSize(890, 580))
-	// vScroll.Move(fyne.NewPos(10, 50))
-
-	// cont.Add(vScroll)
-	sh.setContent(mainCont)
+	cont.Add(vScroll)
+	sh.setContent(cont)
 }
