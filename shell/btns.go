@@ -65,3 +65,13 @@ func (sh *Shell) showAllCatalog() {
 	cont.Add(vScroll)
 	sh.setContent(cont)
 }
+
+func (sh *Shell) search(request string) {
+	// result := map[string][]int{}
+
+	cell, _ := sh.xlFile.GetCellValue("Водный транспорт", "A2")
+	// for _, listNane := range sh.xlFile.GetSheetList() {
+	// 	for k, v := range sh.xlFile.She
+	// }
+	fmt.Println(cell)
+}

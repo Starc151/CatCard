@@ -15,7 +15,7 @@ func (sh *Shell) searchBox() *fyne.Container {
 			"",
 			40, 40,
 			850, 0,
-			nil,
+			func() {sh.search(sh.entry.Text)},
 		)
 	icon, _ := fyne.LoadResourceFromPath("img/search.png")
 	btn.Icon = icon
