@@ -67,11 +67,54 @@ func (sh *Shell) showAllCatalog() {
 }
 
 func (sh *Shell) search(request string) {
-	// result := map[string][]int{}
+	result := map[string][]int{}
+	for _, listNane := range sh.xlFile.GetSheetList() {
+		rows, _ :=  sh.xlFile.GetRows(listNane)
+		for _, row := range rows {
+			for numRow, cell := range row {
+				if request == cell {
+					result[listNane] = append(result[listNane], numRow + 1)
+				}
+			}
+		}
+	}
+	sh.lenCatalog = len(result)
+	catalogNameText := canvas.NewText("Результаты поиска", nil)
+	if len(result) == 0 {
+		catalogNameText.Text = "Ничего не найдено"
+	}
+	catalogName := container.New(layout.NewCenterLayout(), catalogNameText)
+	catalogName.Resize(fyne.NewSize(890, 70))
+	catalogName.Move(fyne.NewPos(10, 20))
+	cont := container.NewWithoutLayout(sh.searchBox(), catalogName)
 
-	cell, _ := sh.xlFile.GetCellValue("Водный транспорт", "A2")
-	// for _, listNane := range sh.xlFile.GetSheetList() {
-	// 	for k, v := range sh.xlFile.She
+	// gridColumns := container.NewGridWithColumns(4)
+	// for numPic := 2; numPic <= sh.lenCatalog+1; numPic++{
+	// 	pic := sh.pic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, numPic))
+	// 	id := numPic
+	// 	pic.SetMinSize(fyne.NewSize(195, 109))
+	// 	btn := sh.button(
+	// 		"", 195, 109,
+	// 		0, 0, func() {
+	// 			sh.id = id
+	// 			sh.showCard()
+	// 		},
+	// 	)
+	// 	contCard := container.New(
+	// 		layout.NewStackLayout(),
+	// 		btn,
+	// 		pic,
+	// 	)
+	// 	contCard.Resize(fyne.NewSize(195, 109))
+	// 	gridColumns.Add(container.NewWithoutLayout(contCard))
 	// }
-	fmt.Println(cell)
+	
+	// vScroll := container.NewVScroll(gridColumns)
+	// vScroll.Resize(fyne.NewSize(890, 460))
+	// vScroll.Move(fyne.NewPos(10, 80))
+	// cont.Add(vScroll)
+		fmt.Println(sh.lenCatalog)
+
+
+	sh.setContent(cont)
 }
