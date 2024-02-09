@@ -2,6 +2,7 @@ package shell
 
 import (
 	"fmt"
+	"strings"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
@@ -72,15 +73,18 @@ func (sh *Shell) search(request string) {
 		rows, _ :=  sh.xlFile.GetRows(listNane)
 		for numRow, row := range rows {
 			for _, cell := range row {
-				if request == cell && numRow != 0 {
+				lowRequest := strings.ToLower(request)
+				lowerCell := strings.ToLower(cell)
+				if strings.Contains(lowerCell, lowRequest) && numRow != 0 {
 					result[listNane] = append(result[listNane], numRow + 1)
+					break
 				}
 			}
 		}
 	}
 	
 	sh.lenCatalog = len(result)
-	catalogNameText := canvas.NewText("Результаты поиска", nil)
+	catalogNameText := canvas.NewText("Результаты поиска:", nil)
 	if len(result) == 0 {
 		catalogNameText.Text = "Ничего не найдено"
 	}
