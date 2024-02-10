@@ -27,6 +27,22 @@ func (sh *Shell) reverse() {
 	sh.showCustom("", "ok", reversePic)
 }
 
+// func (sh *Shell) editCard() {
+// 	cont := container.NewWithoutLayout(sh.searchBox())
+// 	rows, _ := sh.xlFile.GetRows(sh.catalogName)
+
+
+
+
+// 	edit := sh.descript()
+// 	for _, v := range edit.Objects {
+// 		v.
+// 	}
+
+// 	cont.Add(vScroll(890, 400, 10, 80, edit))
+// 	sh.setContent(cont)
+// }
+
 func (sh *Shell) showAllCatalog() {
 	sh.getlenCatalog()
 	catalogNameText := canvas.NewText(sh.catalogName, nil)
@@ -60,10 +76,7 @@ func (sh *Shell) showAllCatalog() {
 		gridColumns.Add(container.NewWithoutLayout(contCard))
 	}
 	
-	vScroll := container.NewVScroll(gridColumns)
-	vScroll.Resize(fyne.NewSize(890, 460))
-	vScroll.Move(fyne.NewPos(10, 80))
-	cont.Add(vScroll)
+	cont.Add(vScroll(890, 460, 10, 80, gridColumns))
 	sh.setContent(cont)
 }
 
@@ -85,9 +98,6 @@ func (sh *Shell) search(request string) {
 	
 	sh.lenCatalog = len(result)
 	catalogNameText := canvas.NewText("Результаты поиска:", nil)
-	if len(result) == 0 {
-		catalogNameText.Text = "Ничего не найдено"
-	}
 	catalogName := container.New(layout.NewCenterLayout(), catalogNameText)
 	catalogName.Resize(fyne.NewSize(890, 70))
 	catalogName.Move(fyne.NewPos(10, 20))
@@ -117,10 +127,10 @@ func (sh *Shell) search(request string) {
 			gridColumns.Add(container.NewWithoutLayout(contCard))
 		}
 	}
-	
-	vScroll := container.NewVScroll(gridColumns)
-	vScroll.Resize(fyne.NewSize(890, 460))
-	vScroll.Move(fyne.NewPos(10, 80))
-	cont.Add(vScroll)
+	cont.Add(vScroll(890, 460, 10, 80, gridColumns))
+	if len(result) == 0 || request == ""{
+		catalogNameText.Text = "Ничего не найдено"
+		cont = container.NewWithoutLayout(sh.searchBox(), catalogName)
+	}
 	sh.setContent(cont)
 }

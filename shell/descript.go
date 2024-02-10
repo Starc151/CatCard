@@ -23,7 +23,5 @@ func (sh *Shell) descript() *fyne.Container {
 		}
 	}
 
-	layout := container.NewWithoutLayout(vScroll(416, 450, vBox))
-	layout.Move(fyne.NewPos(470, 100))
-	return layout
+	return vBox
 }
