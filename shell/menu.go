@@ -28,11 +28,18 @@ func (sh *Shell) setCatalogName(catalogName string) {
 }
 
 func (sh *Shell) menu() {
-	mainMenu := fyne.NewMainMenu(
-		fyne.NewMenu("Каталоги", sh.setCatalogs()...),
-		fyne.NewMenu("Справка", sh.menuItems("Справка", "help")...),
-	)
-	sh.window.SetMainMenu(mainMenu)
+	if sh.xlFile != nil {
+		mainMenu := fyne.NewMainMenu(
+			fyne.NewMenu("Каталоги", sh.setCatalogs()...),
+			fyne.NewMenu("Справка", sh.menuItems("Справка", "help")...),
+		)
+		sh.window.SetMainMenu(mainMenu)
+	} else {
+		mainMenu := fyne.NewMainMenu(
+			fyne.NewMenu("Справка", sh.menuItems("Справка", "help")...),
+		)
+		sh.window.SetMainMenu(mainMenu)
+	}
 }
 
 func (sh *Shell) menuItems(nameMenu, fileMenu string) []*fyne.MenuItem {

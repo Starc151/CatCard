@@ -37,3 +37,12 @@ func (sh *Shell) showCustom(title, btnTxt string, content fyne.CanvasObject) {
 		content,
 		sh.window)
 }
+
+func (sh *Shell) showConfirm() {
+	dialog.ShowCustomWithoutButtons(
+		"ОШИБКА!",
+		widget.NewButton(
+			"Файл с даынными не найден!\n Приложение будет закрыто!",
+			func() {sh.window.Close()}),
+		sh.window)
+}
