@@ -27,21 +27,30 @@ func (sh *Shell) reverse() {
 	sh.showCustom("", "ok", reversePic)
 }
 
-// func (sh *Shell) editCard() {
-// 	cont := container.NewWithoutLayout(sh.searchBox())
-// 	rows, _ := sh.xlFile.GetRows(sh.catalogName)
+func (sh *Shell) editCard() {
+	cont := container.NewWithoutLayout(sh.searchBox())
+	rows, _ := sh.xlFile.GetRows(sh.catalogName)
+	
+	if (sh.id <= len(rows)) && (len(rows[sh.id-1]) > 0){
+		for numCell := 0; numCell <  min(len(rows[0]), len(rows[sh.id-1])) ; numCell++ {
+			descript := canvas.NewText(rows[0][numCell]+" "+rows[sh.id-1][numCell], nil)
+			if rows[sh.id-1][numCell] != "" {
+				vBox.Add(descript)
+			}
+		}
+	}
 
 
 
 
-// 	edit := sh.descript()
-// 	for _, v := range edit.Objects {
-// 		v.
-// 	}
+	edit := sh.descript()
+	for _, v := range edit.Objects {
+		fmt.Println(v)
+	}
 
-// 	cont.Add(vScroll(890, 400, 10, 80, edit))
-// 	sh.setContent(cont)
-// }
+	cont.Add(vScroll(890, 400, 10, 80, edit))
+	sh.setContent(cont)
+}
 
 func (sh *Shell) showAllCatalog() {
 	sh.getlenCatalog()

@@ -91,7 +91,7 @@ func (sh *Shell) showCard() {
 	if sh.id <= 2 {
 		preBtn.Disable()
 	}
-	// editBtn := 	sh.button("Редактировать", 416, 40, 470, 450, sh.editCard)
+	editBtn := 	sh.button("Редактировать", 416, 40, 470, 450, sh.editCard)
 	nextBtn := sh.button("Вперед", 210, 40, 237, 510, sh.nextCard)
 	if sh.id > sh.lenCatalog {
 		nextBtn.Disable()
@@ -108,7 +108,7 @@ func (sh *Shell) showCard() {
 		allCatalog,
 		vScroll(416, 315, 470, 100, sh.descript()),
 		sh.pic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, sh.id)),
-		reverseBtn, preBtn /*editBtn,*/, nextBtn,
+		reverseBtn, preBtn, editBtn, nextBtn,
 	)
 	sh.setContent(cont)
 }
