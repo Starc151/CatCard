@@ -2,6 +2,7 @@ package shell
 
 import (
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
@@ -39,10 +40,12 @@ func (sh *Shell) showCustom(title, btnTxt string, content fyne.CanvasObject) {
 }
 
 func (sh *Shell) showConfirm() {
-	dialog.ShowCustomWithoutButtons(
-		"ОШИБКА!",
-		widget.NewButton(
-			"Файл с даынными не найден!\n Приложение будет закрыто!",
-			func() {sh.window.Close()}),
-		sh.window)
+	btn := sh.button("Закрыть", 100, 50, 0, 0, sh.window.Close)
+	txt := canvas.NewText("Файл с данными не найден! Приложение будет закрыто!", nil)
+	box := container.NewCenter(container.NewVBox(txt, btn))
+	box.Resize(fyne.NewSize(865, 200))
+	box.Move(fyne.NewPos(20, 100))
+
+	cont := container.NewWithoutLayout(box)
+	sh.setContent(cont)
 }
