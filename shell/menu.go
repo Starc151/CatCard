@@ -30,8 +30,8 @@ func (sh *Shell) setCatalogName(catalogName string) {
 func (sh *Shell) menu() {
 	if sh.xlFile != nil {
 		mainMenu := fyne.NewMainMenu(
-			fyne.NewMenu("Каталоги", sh.setCatalogs()...),
 			fyne.NewMenu("Справка", sh.menuItems("Справка", "help")...),
+			fyne.NewMenu("Каталоги", sh.setCatalogs()...),
 		)
 		sh.window.SetMainMenu(mainMenu)
 	} else {

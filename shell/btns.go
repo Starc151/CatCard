@@ -2,13 +2,14 @@ package shell
 
 import (
 	"fmt"
+	// "image/color"
 	"strings"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/widget"
 	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/widget"
 )
 
 func (sh *Shell) nextCard() {
@@ -29,34 +30,38 @@ func (sh *Shell) reverse() {
 }
 
 func (sh *Shell) editCard() {
-	hBox := container.NewHBox()
-	vBoxleft := container.NewVBox()
-	vBoxRight := container.NewVBox()
-	vBox := container.NewVBox()
+	gridColumns := container.NewGridWithColumns(1)
+	box := container.NewWithoutLayout()
 	cont := container.NewWithoutLayout(sh.searchBox())
 
-
-
 	rows, _ := sh.xlFile.GetRows(sh.catalogName)
-	
-	if (sh.id <= len(rows)) && (len(rows[sh.id-1]) > 0){
-		for numCell := 0; numCell <  min(len(rows[0]), len(rows[sh.id-1])) ; numCell++ {
-			descript := canvas.NewText(rows[0][numCell], nil) //+" "+rows[sh.id-1][numCell], nil)
-			entry := widget.NewEntry()
-			entry.Text = rows[sh.id-1][numCell]
-			vBoxleft.Add(descript)
-			vBoxRight.Add(entry)
-		}
+	vBox := container.NewVBox()
+
+	for numCell := 0; numCell < min(len(rows[0]), len(rows[sh.id-1])); numCell++ {
+		descript := canvas.NewText(rows[0][numCell], nil)
+		descript.Move(fyne.NewPos(20, 0))
+		entry := widget.NewEntry()
+		entry.Text = rows[sh.id-1][numCell]
+		entry.Resize(fyne.NewSize(400, 40))
+		entry.Move(fyne.NewPos(400, -30))
+		layoutEntry := container.NewWithoutLayout(entry)
+		layoutDiscript := container.NewWithoutLayout(descript)
+		vBox.Add(layoutDiscript)
+		vBox.Add(layoutEntry)
 	}
 
-	cont.Add(vScroll(890, 400, 10, 80, vBox))
+	gridColumns.Add(box)
+	cansel := sh.button("Отмена", 437, 40, 10, 500, sh.showCard)
+	okey := 	sh.button("Применить", 416, 40, 470, 500, nil)
+	cont.Add(vScroll(890, 400, 10, 70, vBox))
+	cont.Add(cansel)
+	cont.Add(okey)
 	sh.setContent(cont)
 }
 
 func (sh *Shell) showAllCatalog() {
 	sh.getlenCatalog()
 	catalogNameText := canvas.NewText(sh.catalogName, nil)
-
 
 	catalogName := container.New(layout.NewCenterLayout(), catalogNameText)
 	catalogName.Resize(fyne.NewSize(890, 70))
@@ -66,7 +71,7 @@ func (sh *Shell) showAllCatalog() {
 		cont = sh.emptyCont()
 	}
 	gridColumns := container.NewGridWithColumns(4)
-	for numPic := 2; numPic <= sh.lenCatalog+1; numPic++{
+	for numPic := 2; numPic <= sh.lenCatalog+1; numPic++ {
 		pic := sh.pic(fmt.Sprintf("pics/%s/%d.jpg", sh.catalogName, numPic))
 		id := numPic
 		pic.SetMinSize(fyne.NewSize(195, 109))
@@ -85,7 +90,7 @@ func (sh *Shell) showAllCatalog() {
 		contCard.Resize(fyne.NewSize(195, 109))
 		gridColumns.Add(container.NewWithoutLayout(contCard))
 	}
-	
+
 	cont.Add(vScroll(890, 460, 10, 80, gridColumns))
 	sh.setContent(cont)
 }
@@ -93,26 +98,26 @@ func (sh *Shell) showAllCatalog() {
 func (sh *Shell) search(request string) {
 	result := map[string][]int{}
 	for _, listNane := range sh.xlFile.GetSheetList() {
-		rows, _ :=  sh.xlFile.GetRows(listNane)
+		rows, _ := sh.xlFile.GetRows(listNane)
 		for numRow, row := range rows {
 			for _, cell := range row {
 				lowRequest := strings.ToLower(request)
 				lowerCell := strings.ToLower(cell)
 				if strings.Contains(lowerCell, lowRequest) && numRow != 0 {
-					result[listNane] = append(result[listNane], numRow + 1)
+					result[listNane] = append(result[listNane], numRow+1)
 					break
 				}
 			}
 		}
 	}
-	
+
 	sh.lenCatalog = len(result)
 	catalogNameText := canvas.NewText("Результаты поиска:", nil)
 	catalogName := container.New(layout.NewCenterLayout(), catalogNameText)
 	catalogName.Resize(fyne.NewSize(890, 70))
 	catalogName.Move(fyne.NewPos(10, 20))
 	cont := container.NewWithoutLayout(sh.searchBox(), catalogName)
-	
+
 	gridColumns := container.NewGridWithColumns(4)
 	for listName, ids := range result {
 		catalogName := listName
@@ -138,7 +143,7 @@ func (sh *Shell) search(request string) {
 		}
 	}
 	cont.Add(vScroll(890, 460, 10, 80, gridColumns))
-	if len(result) == 0 || request == ""{
+	if len(result) == 0 || request == "" {
 		catalogNameText.Text = "Ничего не найдено"
 		cont = container.NewWithoutLayout(sh.searchBox(), catalogName)
 	}
