@@ -7,6 +7,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
 	"fyne.io/fyne/v2/layout"
 )
 
@@ -28,27 +29,27 @@ func (sh *Shell) reverse() {
 }
 
 func (sh *Shell) editCard() {
+	hBox := container.NewHBox()
+	vBoxleft := container.NewVBox()
+	vBoxRight := container.NewVBox()
+	vBox := container.NewVBox()
 	cont := container.NewWithoutLayout(sh.searchBox())
+
+
+
 	rows, _ := sh.xlFile.GetRows(sh.catalogName)
 	
 	if (sh.id <= len(rows)) && (len(rows[sh.id-1]) > 0){
 		for numCell := 0; numCell <  min(len(rows[0]), len(rows[sh.id-1])) ; numCell++ {
-			descript := canvas.NewText(rows[0][numCell]+" "+rows[sh.id-1][numCell], nil)
-			if rows[sh.id-1][numCell] != "" {
-				vBox.Add(descript)
-			}
+			descript := canvas.NewText(rows[0][numCell], nil) //+" "+rows[sh.id-1][numCell], nil)
+			entry := widget.NewEntry()
+			entry.Text = rows[sh.id-1][numCell]
+			vBoxleft.Add(descript)
+			vBoxRight.Add(entry)
 		}
 	}
 
-
-
-
-	edit := sh.descript()
-	for _, v := range edit.Objects {
-		fmt.Println(v)
-	}
-
-	cont.Add(vScroll(890, 400, 10, 80, edit))
+	cont.Add(vScroll(890, 400, 10, 80, vBox))
 	sh.setContent(cont)
 }
 
