@@ -116,3 +116,14 @@ func (sh *Shell) showCard() {
 func (sh *Shell) setContent(cont fyne.CanvasObject) {
 	sh.window.SetContent(cont)
 }
+
+func (sh *Shell) showConfirm() {
+	btn := sh.button("Закрыть", 100, 50, 0, 0, sh.window.Close)
+	txt := canvas.NewText("Файл с данными не найден! Приложение будет закрыто!", nil)
+	box := container.NewCenter(container.NewVBox(txt, btn))
+	box.Resize(fyne.NewSize(865, 200))
+	box.Move(fyne.NewPos(20, 100))
+
+	cont := container.NewWithoutLayout(box)
+	sh.setContent(cont)
+}

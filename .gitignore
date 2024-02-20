@@ -1,9 +1,9 @@
 /build
 /pics
-/slu
 .vscode
 
 # Binaries for programs and plugins
+*.xlsx
 *.apk
 *.exe
 *.exe~

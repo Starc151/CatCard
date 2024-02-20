@@ -2,7 +2,6 @@ package shell
 
 import (
 	"fmt"
-	// "image/color"
 	"strings"
 
 	"fyne.io/fyne/v2"
@@ -10,6 +9,7 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
+	"github.com/xuri/excelize/v2"
 )
 
 func (sh *Shell) nextCard() {
@@ -52,7 +52,7 @@ func (sh *Shell) editCard() {
 
 	gridColumns.Add(box)
 	cansel := sh.button("Отмена", 437, 40, 10, 500, sh.showCard)
-	okey := 	sh.button("Применить", 416, 40, 470, 500, nil)
+	okey := 	sh.button("Применить", 416, 40, 470, 500, sh.editCardOk)
 	cont.Add(vScroll(890, 400, 10, 70, vBox))
 	cont.Add(cansel)
 	cont.Add(okey)
@@ -148,4 +148,9 @@ func (sh *Shell) search(request string) {
 		cont = container.NewWithoutLayout(sh.searchBox(), catalogName)
 	}
 	sh.setContent(cont)
+}
+
+func (sh *Shell) editCardOk() {
+	sh.xlFile, _ = excelize.OpenFile("slu/data.xlsx")
+	sh.showCard()
 }
