@@ -9,7 +9,7 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
-	// "github.com/xuri/excelize/v2"
+	"github.com/xuri/excelize/v2"
 )
 
 func (sh *Shell) nextCard() {
@@ -34,17 +34,20 @@ func (sh *Shell) editCard() {
 	box := container.NewWithoutLayout()
 	cont := container.NewWithoutLayout(sh.searchBox())
 	vBox := container.NewVBox()
-
 	rows, _ := sh.xlFile.GetRows(sh.catalogName)
-	
-	for numCell := 0; numCell < min(len(rows[0]), len(rows[sh.id-1])); numCell++ {
+	valueNew := map[int]string{}
+	entryList := []*widget.Entry{}
+	for numCell := 0; numCell < len(rows[0]); numCell++ {
 		descript := canvas.NewText(rows[0][numCell], nil)
 		descript.Move(fyne.NewPos(20, 0))
 		entry := widget.NewEntry()
-		entry.Text = rows[sh.id-1][numCell]
+		if numCell < len(rows[sh.id-1]) {
+			entry.Text = rows[sh.id-1][numCell]
+		}
 		entry.Resize(fyne.NewSize(400, 40))
 		entry.Move(fyne.NewPos(400, -30))
-		layoutEntry := container.NewWithoutLayout(entry)
+		entryList = append(entryList, entry)
+		layoutEntry := container.NewWithoutLayout(entryList[numCell])
 		layoutDiscript := container.NewWithoutLayout(descript)
 		vBox.Add(layoutDiscript)
 		vBox.Add(layoutEntry)
@@ -52,13 +55,15 @@ func (sh *Shell) editCard() {
 	
 	gridColumns.Add(box)
 	cansel := sh.button("Отмена", 437, 40, 10, 500, sh.showCard)
-	okey := 	sh.button("Применить", 416, 40, 470, 500, func() {
-		sh.xlFile.Save()
-		sh.showCard()
+	accept := 	sh.button("Применить", 416, 40, 470, 500, func() {
+		for v, k := range entryList {
+			valueNew[v] = k.Text
+		}
+		sh.editCardAccept(valueNew)
 	})
 	cont.Add(vScroll(890, 400, 10, 70, vBox))
 	cont.Add(cansel)
-	cont.Add(okey)
+	cont.Add(accept)
 	sh.setContent(cont)
 }
 
@@ -153,4 +158,11 @@ func (sh *Shell) search(request string) {
 	sh.setContent(cont)
 }
 
-
+func (sh *Shell) editCardAccept(valueNew map[int]string) {
+	for k, v := range valueNew {
+		cell, _ := excelize.CoordinatesToCellName(k+1, sh.id)
+		sh.xlFile.SetCellValue(sh.catalogName, cell, v)
+	}
+	sh.xlFile.Save()
+	sh.showCard()	
+}
