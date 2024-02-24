@@ -74,7 +74,6 @@ func (sh *Shell) contacts() {
 
 func (sh *Shell) help(){
 	vBox := container.NewVBox()
-	vBox.Resize(fyne.NewSize(240, 490))
 	layout := container.NewWithoutLayout()
 
 	file, _ := os.Open("shell/help/briefInformation.txt")
